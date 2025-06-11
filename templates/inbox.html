@@ -1,0 +1,62 @@
+{% extends 'layout.html' %}
+{% block title %}Inbox {% endblock %}
+
+{% block content %}
+
+            <!-- Modal -->
+            <div class="modal fade" id="subscribeModal" tabindex="-1" aria-labelledby="subscribeModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+
+                        <div class="modal-body">
+                            <form action="#" method="get" class="custom-form mt-lg-4 mt-2" role="form">
+                                <h2 class="modal-title" id="subscribeModalLabel">Stay up to date</h2>
+
+                                <input type="email" name="email" id="email" pattern="[^ @]*@[^ @]*" class="form-control" placeholder="your@email.com" required="">
+
+                                <button type="submit" class="form-control">Notify</button>
+                            </form>
+                        </div>
+
+                        <div class="modal-footer justify-content-center">
+                            <p>By signing up, you agree to our Privacy Notice</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <section class="hero-section d-flex justify-content-center align-items-center">
+                <div class="container">
+                    <div class="row">
+                        <div>
+                            <br><br>
+                            <h5 class="hero-title text-center mb-4 pb-2">Inbox ({{ inbox_messages | length }})</h5>
+                            <ul>
+                                {% for message in inbox_messages %}
+                                <li>
+                                    <h6>{{ message.from_user }}</h6>
+                                    <p>{{ message.message }}</p>
+                                    <span>{{ message.sent_at }}</span>
+                                    {% for message in messages %}
+                                    {{ message.message }}
+                                    {% endfor %}
+                                    <form method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="choice" value="delete">
+                                        <input type="hidden" name="message_id" value="{{ message.id }}">
+                                        <button type="submit">Delete</button>
+                                    </form>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+
+{% endblock %}
